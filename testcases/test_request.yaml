@@ -1,0 +1,83 @@
+- name: Test Request API 1
+  description: Test the API for requesting a test case1
+  request:
+    url: https://postman-echo.com/post
+    method: POST
+    headers:
+      content-type: application/json
+    json:
+      firstName: Emilia
+      lastName: Bednar
+      createdAt: '2024-04-26T02:13:03.126Z'
+      address:
+        line1: 806 Hagenes Rapid
+        line2: West Ahmad
+        country: VA
+    response:
+      status_code: 200
+      body:
+        message: Test case request submitted successfully. We will get back to you soon.
+    extract:
+      url: $.url
+    validate:
+      - eq: {$.url: https://postman-echo.com/post}
+      - eq: {$.json.firstName: Emilia}
+      - contains: {$.data.lastName: Bednar}
+  validate:
+      status_code: 200
+  data:
+    title: Test Case Request
+    description: Please provide a test case for the API
+    severity: high
+    environment: production
+    steps:
+      - step1: step1 description
+      - step2: step2 description
+      - step3: step3 description
+    attachments:
+      - attachment1.txt
+      - attachment2.txt
+
+- name: Test Request API 2
+  description: Test the API for requesting a test case2
+  request:
+    url: https://postman-echo.com/get
+    method: GET
+    params:
+      foo1: bar1
+      foo2: ${get_random_str(1000, 9999)}
+    response:
+      status_code: 200
+      body:
+        message: Test case request submitted successfully. We will get back to you soon.
+    validate:
+      - contains: {$.url: https://postman-echo.com/get}
+      - eq: {$.args.foo1: bar1}
+  validate:
+    - eq: {status_code: 200}
+  data:
+    title: Test Case Request
+    description: Please provide a test case for the API
+    severity: high
+    environment: production
+    steps:
+      - step1: step1 description
+      - step2: step2 description
+      - step3: step3 description
+
+- name: Test Request API 3
+  description: Test the API for requesting a test case3
+  request:
+    url: https://postman-echo.com/get
+    method: GET
+    params:
+      foo1: bar1
+      foo2: ${get_random_str(1000, 9999)}
+      foo3: ${get_random_num(1000, 9999)}
+    response:
+      status_code: 200
+      body:
+        message: Test case request submitted successfully. We will get back to you soon.
+    validate:
+      - contains: {$.url: https://postman-echo.com/get}
+      - eq: {$.args.foo1: bar1}
