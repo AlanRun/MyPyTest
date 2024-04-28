@@ -1,6 +1,6 @@
-temp
-report
-.idea
-.pytest_cache
-__pycache__
-venv
+temp/
+report/
+.idea/
+.pytest_cache/
+__pycache__/
+venv/
