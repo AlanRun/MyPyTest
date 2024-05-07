@@ -1,13 +1,22 @@
 import pytest
 
 from common.yaml_util import clear_yaml
+from logs.log_util import LogUtil
 
 
 @pytest.fixture(scope='class', autouse=True)
-def teardown_class_fixture():
+def class_fixture(request):
     clear_yaml()
+    LogUtil(request.cls.__name__).log_info(f"Starting Class:{request.cls.__name__}")
     yield
-    print('\nself define teardown class')
+    LogUtil(request.cls.__name__).log_info(f"Finished Class:{request.cls.__name__}")
+
+
+@pytest.fixture(scope='function', autouse=True)
+def function_fixture(request):
+    LogUtil(request.cls.__name__).log_info(f"Starting Function:{request.function.__name__}")
+    yield
+    LogUtil(request.cls.__name__).log_info(f"Finished Function:{request.function.__name__}")
 
 
 @pytest.fixture(scope='function', params=[1, 2, 3], ids=['one', 'two', 'three'])

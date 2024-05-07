@@ -72,14 +72,21 @@ def find_and_replace(data, target_value=None, target_value_start=None,
     """
     if isinstance(data, dict):
         for key, value in data.items():
+            if isinstance(value, dict):
+                find_and_replace(value, target_value, target_value_start, target_value_end, target_value_contains)
+            elif isinstance(value, list):
+                find_and_replace(value, target_value, target_value_start, target_value_end, target_value_contains)
             if (value == target_value if target_value else False) \
-                        or (target_value_contains in str(value) if target_value_contains else False) \
-                        or (str(value).startswith(target_value_start) if target_value_start else False and str(value).endswith(target_value_end) if target_value_end else False):
-                func_name = value[2:value.index('(')]
+                    or (target_value_contains in str(value) if target_value_contains else False) \
+                    or (target_value_start in str(value) if target_value_start else False and target_value_end in str(value) if target_value_end else False):
+                func_name = value[value.index(target_value_start)+len(target_value_start):value.index('(')]
                 arg_value = value[value.index('(') + 1:value.index(')')]
                 new_value = getattr(DebugTalk(), func_name)(*arg_value.split(','))
-                print(f'\n{key}: {value} -> {new_value}')
-                data[key] = new_value
+                if value[:value.index(target_value_start)]:
+                    data[key] = value[:value.index(target_value_start)] + new_value
+                    # print(f'\n{key}: {data[key]}')
+                else:
+                    data[key] = new_value
             else:
                 find_and_replace(value, target_value, target_value_start, target_value_end, target_value_contains)
     elif isinstance(data, list):
@@ -87,24 +94,13 @@ def find_and_replace(data, target_value=None, target_value_start=None,
             find_and_replace(item, target_value, target_value_start, target_value_end, target_value_contains)
 
 
-your_json = {
-    "name": "John",
-    "age": 30,
-    "address": {
-        "street": "123 Main St",
-        "city": "Anytown"
-    },
-    "tags": ["tag1", "tag2", "tag1"],
-    "friends": [
-        {"name": "Jim", "age": '${get_random_num(1000, 9999)}'},
-        {"name": "Bob", "age": '${get_random_str(1000, 9999)}'}
-    ]
-}
+your_json = {"name": "Test Request API 3", "description": "Test the API for requesting a test case3", "request": {"url": "https://postman-echo.com/get", "method": "GET", "params": {"foo1": "bar1", "foo2": "foo2_${get_random_str(1000, 9999)}", "foo3": "${get_random_num(1000, 9999)}"}, "response": {"status_code": 200, "body": {"message": "Test case request submitted successfully. We will get back to you soon."}}, "validate": [{"contains": {"$.url": "https://postman-echo.com/get"}}, {"eq": {"$.args.foo1": "bar1"}}]}}
+
 
 if __name__ == '__main__':
     # print_json(your_json)
     # t_v = "Bob"
-    t_v = "${get_random_str(1000, 9999)}"
+    # t_v = "${get_random_str(1000, 9999)}"
     t_v_start = "${"
     t_v_end = "}"
     find_and_replace(your_json, target_value_start=t_v_start, target_value_end=t_v_end)

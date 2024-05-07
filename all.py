@@ -12,6 +12,7 @@ import pytest
 pdb.set_trace()断点
 执行顺序：@pytest.mark.run(order=1)
 参数化： @pytest.mark.parametrize("num, expected", data1)
+--random-order : 随机执行用例
 """
 if __name__ == '__main__':
     # pytest.main(['-vs', 'test_1.py::TestDemo::test_aa', '-n=2', '--reruns=2'])

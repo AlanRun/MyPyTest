@@ -6,3 +6,8 @@ pytest-rerunfailures
 allure-pytest
 pyyaml
 jsonpath_ng
+pytest-random-order
+selenium
+webdriver_manager
+appium-python-client
+pytest-logging

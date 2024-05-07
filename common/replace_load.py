@@ -16,9 +16,12 @@ def replace_load(data: Union[Dict, Text]) -> Union[Dict, Text]:
     :return: 对测试用例进行热加载
     """
 
-    data_obj = copy.deepcopy(data)  # 这里可以考虑使用deepcopy来进行深拷贝，防止原数据被修改
-    if data and isinstance(data_obj, str):  # 如果data不为空，并且格式为字符串,尝试将其转换为字典或列表
-        data_obj = json.loads(data_obj)
+    data_obj = copy.deepcopy(data) if data else False  # 这里可以考虑使用deepcopy来进行深拷贝，防止原数据被修改
+    if isinstance(data, str):  # 如果data不为空，并且格式为字符串,尝试将其转换为字典或列表
+        try:
+            data_obj = json.loads(data_obj)
+        except json.JSONDecodeError:
+            pass
 
     t_v_start = "${"
     t_v_end = "}"

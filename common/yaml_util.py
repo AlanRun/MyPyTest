@@ -57,11 +57,15 @@ def read_testcase(yaml_name):
     """
     with open(os.getcwd() + '/testcases/' + yaml_name) as file:
         args = yaml.load(stream=file, Loader=yaml.FullLoader)
-        args_str = json.dumps(args)
-        for item in args:
-            new_item = replace_load(item)
-            # args_str = args_str.replace(json.dumps(item), json.dumps(new_item))
-            args[args.index(item)] = new_item
-        args = json.loads(args_str)
-        # 返回替换过后的args
+        if args:
+            if isinstance(args, list):
+                for item in args:
+                    new_item = replace_load(item)
+                    args[args.index(item)] = new_item
+            elif isinstance(args, dict):
+                for key, value in args.items():
+                    new_item = replace_load(value)
+                    args[key] = new_item
+        else:
+            return None
         return args

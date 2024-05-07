@@ -20,43 +20,55 @@ class RequestUtil:
         :param kwargs:
         :return:
         """
-        method = str(kwargs.pop('method', 'GET')).lower()
-        url = kwargs.pop('url', None)
-        data = kwargs.pop('data', None)
-        params = kwargs.pop('params', None)
-        json = kwargs.pop('json', None)
-        headers = kwargs.pop('headers', None)
-        cookies = kwargs.pop('cookies', None)
-        files = kwargs.pop('files', None)
-        timeout = kwargs.pop('timeout', None)
-        allow_redirects = kwargs.pop('allow_redirects', False)
-        proxies = kwargs.pop('proxies', None)
-        hooks = kwargs.pop('hooks', None)
-        stream = kwargs.pop('stream', None)
-        verify = kwargs.pop('verify', None)
-        cert = kwargs.pop('cert', None)
+        method = str(kwargs.get('method', 'GET')).lower()
+        url = kwargs.get('url', None)
+        data = kwargs.get('data', None)
+        params = kwargs.get('params', None)
+        json = kwargs.get('json', None)
+        headers = kwargs.get('headers', None)
+        cookies = kwargs.get('cookies', None)
+        files = kwargs.get('files', None)
+        timeout = kwargs.get('timeout', None)
+        allow_redirects = kwargs.get('allow_redirects', False)
+        proxies = kwargs.get('proxies', None)
+        hooks = kwargs.get('hooks', None)
+        stream = kwargs.get('stream', None)
+        verify = kwargs.get('verify', None)
+        cert = kwargs.get('cert', None)
         res = RequestUtil.sess.request(method=method, url=url, json=json, params=params, data=data, headers=headers,
                                        cookies=cookies, files=files, timeout=timeout, allow_redirects=allow_redirects,
                                        proxies=proxies, hooks=hooks, stream=stream, verify=verify, cert=cert)
 
         # verify the response
-        self.verify_response(res, kwargs.pop('response', None))
+        self.verify_response(res, kwargs.get('response', None))
 
         # extract the data from the response
-        self.extract_data(res, kwargs.pop('extract', None))
+        self.extract_data(res, kwargs.get('extract', None))
 
         # validate the response
-        self.validate_response(res, kwargs.pop('validate', None))
+        self.validate_response(res, kwargs.get('validate', None))
 
         # return the response
         return res
 
     @allure.step("Verify response")
     def verify_response(self, res, res_expected):
-        assert res.status_code == res_expected.pop('status_code', None)
+        """
+        This method is used to verify the response of the API.
+        :param res:
+        :param res_expected:
+        :return:
+        """
+        assert res.status_code == res_expected.get('status_code', None)
 
     @allure.step("Extract data form response")
     def extract_data(self, res, extract):
+        """
+        This method is used to extract the data from the response of the API.
+        :param res:
+        :param extract:
+        :return:
+        """
         if extract:
             for k, p in extract.items():
                 # 正则表达式格式提取
@@ -68,6 +80,12 @@ class RequestUtil:
 
     @allure.step("Validate response")
     def validate_response(self, res, validate):
+        """
+        This method is used to validate the response of the API.
+        :param res:
+        :param validate:
+        :return:
+        """
         if validate and 'application/json' in res.headers['Content-Type']:
             for item in validate:
                 for k, v in item.items():
