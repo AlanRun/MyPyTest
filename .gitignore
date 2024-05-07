@@ -1,6 +1,8 @@
 temp/
-report/
+reports/
 .idea/
 .pytest_cache/
 __pycache__/
 venv/
+extract.yaml
+log.txt
