@@ -1,34 +1,37 @@
+"""
+This file is used to define fixtures for the test cases.
+"""
 import pytest
 
 from common.yaml_util import clear_yaml
-from logs.log_util import LogUtil
+from common.log_util import my_log
 
 
 @pytest.fixture(scope='class', autouse=True)
 def class_fixture(request):
     clear_yaml()
-    LogUtil(request.cls.__name__).log_info(f"Starting Class:{request.cls.__name__}")
+    my_log().info(f"Starting Class:{request.cls.__name__}")
     yield
-    LogUtil(request.cls.__name__).log_info(f"Finished Class:{request.cls.__name__}")
+    my_log().info(f"Finished Class:{request.cls.__name__}")
 
 
 @pytest.fixture(scope='function', autouse=True)
 def function_fixture(request):
-    LogUtil(request.cls.__name__).log_info(f"Starting Function:{request.function.__name__}")
+    my_log().info(f"Starting Function:{request.function.__name__}")
     yield
-    LogUtil(request.cls.__name__).log_info(f"Finished Function:{request.function.__name__}")
+    my_log().info(f"Finished Function:{request.function.__name__}")
 
 
 @pytest.fixture(scope='function', params=[1, 2, 3], ids=['one', 'two', 'three'])
 def setup_method_fixture(request):
-    print("\nself define setup method")
+    my_log().info("\nself define setup method")
     return request.param
     # yield
-    # print("self define teardown method")
+    # my_log().info("self define teardown method")
 
 
 @pytest.fixture(scope='function')
 def setup_method_fixture_aa():
-    print("\nself define setup method")
+    my_log().info("\nself define setup method")
     yield
-    print("\nself define teardown method")
+    my_log().info("\nself define teardown method")

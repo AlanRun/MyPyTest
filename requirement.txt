@@ -11,3 +11,4 @@ selenium
 webdriver_manager
 appium-python-client
 pytest-logging
+pytest-assume

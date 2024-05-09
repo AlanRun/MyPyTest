@@ -13,8 +13,6 @@ class TestRequest:
     @pytest.mark.run(order=DebugTalk().get_random_num(1, 1000))
     @allure.step('Request')
     def test_request(self, args_name):
-        args = json.dumps(args_name)
-        print(f"\nTestcase: {args}")
         req_data = args_name.pop('request', False)
 
         if req_data:

@@ -20,8 +20,10 @@
       body:
         message: Test case request submitted successfully. We will get back to you soon.
     extract:
-      url: $.url
+      msgType: $.msgType
+      clientId: clientId":\s*"(.*?)"
     validate:
+      - eq: {$..clientId: BMX}
       - eq: {$.url: https://postman-echo.com/post}
       - eq: {$.json.firstName: Emilia}
       - contains: {$.data.lastName: Bednar}

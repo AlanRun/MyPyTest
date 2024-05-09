@@ -1,0 +1,3 @@
+BASE:
+  log_level: "debug"
+  log_extension: ".log"

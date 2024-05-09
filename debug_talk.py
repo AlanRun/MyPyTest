@@ -1,3 +1,6 @@
+"""
+This is a debug talk module.
+"""
 import random
 
 

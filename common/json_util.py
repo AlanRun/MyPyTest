@@ -5,6 +5,14 @@ import jsonpath
 from debug_talk import DebugTalk
 
 
+def is_json(my_str):
+    try:
+        json_obj = json.loads(my_str)
+    except ValueError as e:
+        return False
+    return True
+
+
 class JsonUtil:
 
     def find_paths_by_value(self, json_obj, target_value, current_path=[], result=[], target_value_start=None,

@@ -3,6 +3,9 @@ import re
 import allure
 import requests
 import jsonpath
+
+from common.assert_util import AssertUtil
+from common.json_util import is_json
 from common.yaml_util import write_yaml
 
 
@@ -59,7 +62,7 @@ class RequestUtil:
         :param res_expected:
         :return:
         """
-        assert res.status_code == res_expected.get('status_code', None)
+        AssertUtil().equal_to(res_expected.get('status_code', None), res.status_code)
 
     @allure.step("Extract data form response")
     def extract_data(self, res, extract):
@@ -71,11 +74,15 @@ class RequestUtil:
         """
         if extract:
             for k, p in extract.items():
-                # 正则表达式格式提取
-                # re.search('url":"(.*?)"', res.text)
-
-                # jsonpath格式提取
-                v = jsonpath.jsonpath(res.json(), p)[0]
+                if r'$.' in p:
+                    # jsonpath格式提取
+                    try:
+                        v = jsonpath.jsonpath(res.json(), p)[0]
+                    except TypeError:
+                        v = None
+                else:
+                    # 正则表达式格式提取
+                    v = re.search(p, res.text).group(1)
                 write_yaml({k: v})
 
     @allure.step("Validate response")
@@ -86,14 +93,20 @@ class RequestUtil:
         :param validate:
         :return:
         """
-        if validate and 'application/json' in res.headers['Content-Type']:
+        if validate and ('json' in res.headers['Content-Type'] or is_json(res.text)):
             for item in validate:
                 for k, v in item.items():
                     if k == 'eq':
                         for key, value in v.items():
-                            actual = jsonpath.jsonpath(res.json(), key)[0]
-                            assert actual == value
+                            try:
+                                actual = jsonpath.jsonpath(res.json(), key)[0]
+                            except TypeError:
+                                actual = None
+                            AssertUtil().equal_to(value, actual)
                     elif k == 'contains':
                         for key, value in v.items():
-                            actual = jsonpath.jsonpath(res.json(), key)[0]
-                            assert value in actual
+                            try:
+                                actual = jsonpath.jsonpath(res.json(), key)[0]
+                            except TypeError:
+                                actual = None
+                            AssertUtil().is_in(value, actual)
