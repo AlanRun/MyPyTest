@@ -1,11 +1,9 @@
-from common.yaml_util import YamlReader
-from common.dir_util import get_config_file, get_db_config_file
+from common.yaml_util import read_config
 
 
 class ConfigUtil:
     def __init__(self):
-        self.config = YamlReader(get_config_file()).data()
-        self.db_config = YamlReader(get_db_config_file()).data()
+        self.config = read_config()
 
     def get_conf_log(self):
         return self.config['BASE']['log_level']
@@ -13,8 +11,14 @@ class ConfigUtil:
     def get_conf_log_extension(self):
         return self.config['BASE']['log_extension']
 
-    def get_db_conf_info(self, db_name):
-        return self.db_config[db_name]
-
     def get_email_config(self):
         return self.config['EMAIL']
+
+    def get_env_config(self, env):
+        return self.config[env]
+
+    def get_env_db_config(self, env):
+        return self.config[env]['db']
+
+    def get_env_base_url(self, env):
+        return self.config[env]['base_url']

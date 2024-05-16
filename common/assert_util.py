@@ -13,23 +13,23 @@ class AssertUtil:
 
     @allure.step("Verify {expected} is equal to {actual}")
     def equal_to(self, expected, actual):
-        pytest.assume(expected == actual, f"Expected: {expected}, != Actual: {actual}")
+        pytest.assume(expected == actual, f"Expected: '{expected}', != Actual: '{actual}'")
 
     @allure.step("Verify {expected} is not equal to {actual}")
     def not_equal_to(self, expected, actual):
-        pytest.assume(expected != actual, f"Expected: {expected}, == Actual: {actual}")
+        pytest.assume(expected != actual, f"Expected: '{expected}', == Actual: '{actual}'")
 
     @allure.step("Verify {expected} is greater than {actual}")
     def greater_than(self, expected, actual):
-        pytest.assume(expected > actual, f"Expected: {expected}, Actual: {actual}")
+        pytest.assume(expected > actual, f"Expected: '{expected}', Actual: '{actual}'")
 
     @allure.step("Verify {expected} is greater than or equal to {actual}")
     def greater_than_or_equal_to(self, expected, actual):
-        pytest.assume(expected >= actual, f"Expected: {expected}, Actual: {actual}")
+        pytest.assume(expected >= actual, f"Expected: '{expected}', Actual: '{actual}'")
 
     @allure.step("Verify {expected} is less than {actual}")
     def less_than(self, expected, actual):
-        pytest.assume(expected < actual, f"Expected: {expected}, Actual: {actual}")
+        pytest.assume(expected < actual, f"Expected: '{expected}', Actual: '{actual}'")
 
     @allure.step("Verify {expected} is less than or equal to {actual}")
     def less_than_or_equal_to(self, expected, actual):
@@ -61,11 +61,12 @@ class AssertUtil:
 
     @allure.step("Verify {expected} is in {actual}")
     def is_in(self, expected, actual):
-        pytest.assume(expected in actual, f"Expected: {expected}, not in Actual: {actual}")
+
+        pytest.assume(expected in actual, f"Expected: '{expected}', not in Actual: '{actual}'")
 
     @allure.step("Verify {expected} is not in {actual}")
     def is_not_in(self, expected, actual):
-        pytest.assume(expected not in actual, f"Expected: {expected}, in Actual: {actual}")
+        pytest.assume(expected not in actual, f"Expected: '{expected}', in Actual: '{actual}'")
 
     @allure.step("Verify {expected} is instance of {actual}")
     def is_instance_of(self, expected, actual):

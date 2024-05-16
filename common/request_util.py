@@ -5,8 +5,7 @@ import requests
 import jsonpath
 
 from common.assert_util import AssertUtil
-from common.json_util import is_json
-from common.yaml_util import write_yaml
+from common.yaml_util import write_yaml, is_json
 
 
 class RequestUtil:
@@ -49,7 +48,7 @@ class RequestUtil:
         self.extract_data(res, kwargs.get('extract', None))
 
         # validate the response
-        self.validate_response(res, kwargs.get('validate', None))
+        self.validate_response_body(res, kwargs.get('validate', None))
 
         # return the response
         return res
@@ -85,8 +84,8 @@ class RequestUtil:
                     v = re.search(p, res.text).group(1)
                 write_yaml({k: v})
 
-    @allure.step("Validate response")
-    def validate_response(self, res, validate):
+    @allure.step("Validate response body")
+    def validate_response_body(self, res, validate):
         """
         This method is used to validate the response of the API.
         :param res:
@@ -101,12 +100,12 @@ class RequestUtil:
                             try:
                                 actual = jsonpath.jsonpath(res.json(), key)[0]
                             except TypeError:
-                                actual = None
+                                actual = ''
                             AssertUtil().equal_to(value, actual)
                     elif k == 'contains':
                         for key, value in v.items():
                             try:
                                 actual = jsonpath.jsonpath(res.json(), key)[0]
                             except TypeError:
-                                actual = None
+                                actual = ''
                             AssertUtil().is_in(value, actual)

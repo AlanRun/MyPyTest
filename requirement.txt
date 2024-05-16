@@ -5,10 +5,13 @@ pytest-ordering
 pytest-rerunfailures
 allure-pytest
 pyyaml
-jsonpath_ng
-pytest-random-order
+#jsonpath_ng
+pytest-random-order # for randomizing test execution order
 selenium
 webdriver_manager
 appium-python-client
 pytest-logging
-pytest-assume
+pytest-assume # for soft assertions
+#pytest-base-url
+pytest-ini # for reading ini files
+jinja2

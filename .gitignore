@@ -2,6 +2,7 @@ temp/
 reports/
 .idea/
 .pytest_cache/
+.logs/
 __pycache__/
 venv/
 extract.yaml

@@ -1,3 +1,6 @@
+"""
+This module contains the paths to various directories and files used in the project.
+"""
 import os
 
 current = os.path.abspath(__file__)
@@ -11,13 +14,15 @@ BASE_DIR = os.getcwd()
 _config_path = BASE_DIR
 # print(f'Config path: {_config_path}')
 
+_testcases_path = BASE_DIR + os.sep + 'testcases'
+# print(f'Testcases path: {_testcases_path}')
+
 # Define the path to the config file
 _config_file = _config_path + os.sep + 'config.yaml'
 # print(f'Config file path: {_config_file}')
 
-# Define the path to the db config file
-_db_config_file = _config_path + os.sep + 'db_config.yaml'
-# print(f'db config file path: {_db_config_file}')
+# Define the path to the extract file
+_extract_file = BASE_DIR + os.sep + 'extract.yaml'
 
 # Define the path to the data directory
 _data_path = BASE_DIR + os.sep + 'data'
@@ -56,12 +61,16 @@ def get_config_path():
     return _config_path
 
 
+def get_testcases_path():
+    return _testcases_path
+
+
 def get_config_file():
     return _config_file
 
 
-def get_db_config_file():
-    return _db_config_file
+def get_extract_file():
+    return _extract_file
 
 
 def get_log_path():

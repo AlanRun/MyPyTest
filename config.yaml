@@ -1,3 +1,13 @@
+# 项目基础配置
 BASE:
-  log_level: "debug"
-  log_extension: ".log"
+  log_level: debug
+  log_extension: .log
+EMAIL:
+  smtp_server: smtp.gmail.com
+  smtp_port: 587
+  smtp_username: your_email_address
+  smtp_password: your_email_password
+  from_email: your_email_address
+  to_email: your_email_address
+  subject: "Error Occured in your application"
+  message: "An error has occurred in your application. Please check the logs for more details."
