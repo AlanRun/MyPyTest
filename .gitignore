@@ -1,8 +1,8 @@
 temp/
-reports/
+reports/*
 .idea/
 .pytest_cache/
-.logs/
+.logs/*
 __pycache__/
 venv/
 extract.yaml
